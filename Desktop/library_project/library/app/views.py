@@ -1,7 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from .models import CollectionItem
 from .forms import CollectionItemForm
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('collection_list')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'auth/register.html', {'form': form})
 
 @login_required
 def collection_list(request):
