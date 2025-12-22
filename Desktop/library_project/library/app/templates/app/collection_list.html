@@ -1,0 +1,15 @@
+<h1>Моя коллекция</h1>
+
+<a href="{% url 'collection_create' %}">Добавить новый элемент</a>
+
+<ul>
+  {% for item in items %}
+    <li>
+      {{ item.title }} - {{ item.description }}
+      <a href="{% url 'collection_update' item.pk %}">Редактировать</a>
+      <a href="{% url 'collection_delete' item.pk %}">Удалить</a>
+    </li>
+  {% empty %}
+    <li>Нет элементов</li>
+  {% endfor %}
+</ul>
