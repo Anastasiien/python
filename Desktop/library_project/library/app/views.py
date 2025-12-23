@@ -3,13 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib import messages
-from .models import CollectionItem
 from .forms import CollectionItemForm, RegisterForm, EmailChangeForm
 from .models import CollectionItem, Genre
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import CollectionItem, Genre
-from .forms import CollectionItemForm
 
 def register(request):
     if request.method == 'POST':
@@ -31,19 +27,18 @@ def collection_list(request):
         items = items.filter(genres__id=genre_id)
 
     sort = request.GET.get('sort')
-    if sort == 'title':
-        items = items.order_by('title')
-    elif sort == '-title':
-        items = items.order_by('-title')
+    if sort in ['title', '-title', 'created_at', '-created_at']:
+        items = items.order_by(sort)
 
     genres = Genre.objects.all()
 
-    return render(request, 'app/collection_list.html', {
+    context = {
         'items': items,
         'genres': genres,
         'selected_genre': genre_id,
         'selected_sort': sort,
-    })
+    }
+    return render(request, 'app/collection_list.html', context)
 
 @login_required
 def collection_create(request):
@@ -53,9 +48,7 @@ def collection_create(request):
             item = form.save(commit=False)
             item.owner = request.user
             item.save()
-            form.save_m2m()  # сохраняем выбранные жанры
-
-            # Добавляем новый жанр, если введен
+            form.save_m2m() 
             new_genre_name = form.cleaned_data.get('new_genre')
             if new_genre_name:
                 genre, created = Genre.objects.get_or_create(name=new_genre_name)
@@ -77,7 +70,6 @@ def collection_update(request, pk):
             item.save()
             form.save_m2m()
 
-            # Новый жанр
             new_genre_name = form.cleaned_data.get('new_genre')
             if new_genre_name:
                 genre, created = Genre.objects.get_or_create(name=new_genre_name)
