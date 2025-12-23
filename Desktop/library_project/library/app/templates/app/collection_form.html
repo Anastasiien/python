@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{% if form.instance.pk %}Редактировать{% else %}Добавить{% endif %} элемент{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Редактировать элемент{% else %}Добавить новый элемент{% endif %}</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+    </div>
+
+    <div class="form-group">
+        {{ form.description.label_tag }}
+        {{ form.description }}
+        <small style="color: #715940;">Описание можно оставить пустым</small>
+    </div>
+
+    <div class="form-group">
+        <label>Жанры:</label>
+        <div style="background: #FDF9F4; padding: 15px; border-radius: 10px; border: 1px solid #DDD0C2;">
+            {{ form.genres }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form.new_genre.label_tag }}
+        {{ form.new_genre }}
+        <small style="color: #715940;">Введите новый жанр, если его нет в списке выше</small>
+    </div>
+
+    <button type="submit" style="margin-top: 20px;">Сохранить</button>
+</form>
+
+<div class="links" style="margin-top: 30px;">
+    <a href="{% url 'collection_list' %}">← Назад к коллекции</a>
+</div>
+{% endblock %}

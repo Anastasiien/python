@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Удалить элемент{% endblock %}
+
+{% block content %}
+<h1>Удалить элемент</h1>
+
+<div style="background: #F8E4E4; padding: 20px; border-radius: 12px; border: 1px solid #E0B0B0; margin: 20px 0;">
+    <p style="margin: 0; color: #8B3A3A; font-size: 18px; text-align: center;">
+        Вы уверены, что хотите удалить элемент?
+    </p>
+    <p style="margin: 15px 0 0 0; text-align: center; font-weight: 600; color: #4C392D;">
+        "{{ item.title }}"
+    </p>
+</div>
+
+<form method="post" style="text-align: center; margin: 30px 0;">
+    {% csrf_token %}
+    <button type="submit" style="background: #8B3A3A;">
+        Да, удалить
+    </button>
+</form>
+
+<div class="links" style="text-align: center;">
+    <a href="{% url 'collection_list' %}">Отмена — вернуться к коллекции</a>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Моя коллекция{% endblock %}
+
+{% block content %}
+<h1>Моя коллекция</h1>
+
+<div class="links" style="margin-bottom: 30px; text-align: center;">
+    <a href="{% url 'collection_create' %}">Добавить новый элемент</a> |
+    <a href="{% url 'profile' %}">Профиль</a>
+</div>
+
+<!-- Фильтры и сортировка -->
+<form method="get" style="margin: 30px 0; padding: 20px; background: #FDF9F4; border-radius: 12px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: end;">
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+            <label for="genre">Фильтр по жанру:</label>
+            <select name="genre" id="genre" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #DDD0C2;">
+                <option value="">Все жанры</option>
+                {% for genre in genres %}
+                    <option value="{{ genre.id }}" {% if selected_genre == genre.id|stringformat:"s" %}selected{% endif %}>
+                        {{ genre.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+            <label for="sort">Сортировка:</label>
+            <select name="sort" id="sort" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #DDD0C2;">
+                <option value="">Без сортировки</option>
+                <option value="title" {% if selected_sort == "title" %}selected{% endif %}>По названию: А → Я</option>
+                <option value="-title" {% if selected_sort == "-title" %}selected{% endif %}>По названию: Я → А</option>
+                <option value="created_at" {% if selected_sort == "created_at" %}selected{% endif %}>Сначала старые</option>
+                <option value="-created_at" {% if selected_sort == "-created_at" %}selected{% endif %}>Сначала новые</option>
+            </select>
+        </div>
+
+        <div>
+            <button type="submit">Применить</button>
+        </div>
+    </div>
+</form>
+
+<!-- Список элементов -->
+{% if items %}
+    <div style="display: grid; gap: 20px;">
+        {% for item in items %}
+            <div style="background: #FDF9F4; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(166, 124, 82, 0.1);">
+                <h3 style="margin: 0 0 10px 0; color: #715940;">
+                    <a href="{% url 'collection_update' item.pk %}" style="color: inherit; text-decoration: none;">
+                        {{ item.title }}
+                    </a>
+                </h3>
+                
+                {% if item.description %}
+                    <p style="margin: 10px 0; color: #4C392D;">{{ item.description }}</p>
+                {% endif %}
+
+                <p style="margin: 10px 0; font-size: 14px; color: #715940;">
+                    <strong>Жанры:</strong>
+                    {% for g in item.genres.all %}
+                        <span style="background: #A67C52; color: white; padding: 4px 10px; border-radius: 20px; font-size: 13px; margin-right: 6px;">
+                            {{ g.name }}
+                        </span>
+                    {% empty %}
+                        <em>Нет жанров</em>
+                    {% endfor %}
+                </p>
+
+                <div style="margin-top: 15px; font-size: 14px;">
+                    <small>Добавлено: {{ item.created_at|date:"d.m.Y H:i" }}</small>
+                    <div style="margin-top: 10px;">
+                        <a href="{% url 'collection_update' item.pk %}" style="color: #A67C52; margin-right: 15px;">Редактировать</a>
+                        <a href="{% url 'collection_delete' item.pk %}" style="color: #8B3A3A;">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p style="text-align: center; color: #715940; font-size: 18px; margin: 60px 0;">
+        Ваша коллекция пуста. <a href="{% url 'collection_create' %}">Добавьте первый элемент</a>!
+    </p>
+{% endif %}
+
+{% endblock %}
