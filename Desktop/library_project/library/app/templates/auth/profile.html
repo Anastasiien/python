@@ -1,17 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
 <h1>Профиль пользователя</h1>
 
-<h2>Смена email</h2>
+{% if messages %}
+    {% for message in messages %}
+        <div class="message success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<h2 style="margin-top: 40px; font-size: 1.4em; color: #444;">Смена email</h2>
 <form method="post">
-  {% csrf_token %}
-  {{ email_form.as_p }}
-  <button type="submit" name="email_form">Обновить email</button>
+    {% csrf_token %}
+    
+    <div class="form-group">
+        {{ email_form.email.label_tag }}
+        {{ email_form.email }}
+    </div>
+
+    <button type="submit" name="email_form">Обновить email</button>
 </form>
 
-<h2>Смена пароля</h2>
+<h2 style="margin-top: 50px; font-size: 1.4em; color: #444;">Смена пароля</h2>
 <form method="post">
-  {% csrf_token %}
-  {{ password_form.as_p }}
-  <button type="submit" name="password_form">Сменить пароль</button>
+    {% csrf_token %}
+    
+    <div class="form-group">
+        {{ password_form.old_password.label_tag }}
+        {{ password_form.old_password }}
+    </div>
+
+    <div class="form-group">
+        {{ password_form.new_password1.label_tag }}
+        {{ password_form.new_password1 }}
+    </div>
+
+    <div class="form-group">
+        {{ password_form.new_password2.label_tag }}
+        {{ password_form.new_password2 }}
+    </div>
+
+    <button type="submit" name="password_form">Сменить пароль</button>
 </form>
 
-<a href="{% url 'collection_list' %}">Назад к коллекции</a>
+<div class="links" style="margin-top: 40px;">
+    <a href="{% url 'collection_list' %}">← Назад к коллекции</a>
+</div>
+{% endblock %}

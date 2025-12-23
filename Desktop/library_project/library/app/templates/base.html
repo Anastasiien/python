@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Моя коллекция{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #F9F0EA 0%, #E8D9C9 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #4C392D;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(76, 57, 45, 0.15);
+        }
+        h1 {
+            text-align: center;
+            color: #715940;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 2em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #715940;
+            font-weight: 500;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #DDD0C2;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background: #FDF9F4;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #A67C52;
+            box-shadow: 0 0 0 4px rgba(166, 124, 82, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: #A67C52;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #8B6F47;
+        }
+        .links {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .links a {
+            color: #A67C52;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .links a:hover {
+            text-decoration: underline;
+            color: #8B6F47;
+        }
+        .message {
+            padding: 14px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .success {
+            background: #E8F0E3;
+            color: #4A7043;
+            border: 1px solid #A8C9A0;
+        }
+        .error {
+            background: #F8E4E4;
+            color: #8B3A3A;
+            border: 1px solid #E0B0B0;
+        }
+        footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 25px;
+            color: #715940;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        &copy; 2025 Моя коллекция — уютное место для твоих вещей
+    </footer>
+</body>
+</html>
