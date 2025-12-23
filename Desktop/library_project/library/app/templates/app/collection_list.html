@@ -1,6 +1,7 @@
 <h1>Моя коллекция</h1>
 
-<a href="{% url 'collection_create' %}">Добавить новый элемент</a>
+<a href="{% url 'collection_create' %}">Добавить новый элемент</a>  |
+<a href="{% url 'profile' %}">Профиль (смена email/пароля)</a>
 
 <ul>
   {% for item in items %}

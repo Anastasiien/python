@@ -1,0 +1,17 @@
+<h1>Профиль пользователя</h1>
+
+<h2>Смена email</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ email_form.as_p }}
+  <button type="submit" name="email_form">Обновить email</button>
+</form>
+
+<h2>Смена пароля</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ password_form.as_p }}
+  <button type="submit" name="password_form">Сменить пароль</button>
+</form>
+
+<a href="{% url 'collection_list' %}">Назад к коллекции</a>

@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import login, update_session_auth_hash
+from django.contrib import messages
 from .models import CollectionItem
-from .forms import CollectionItemForm, RegisterForm
+from .forms import CollectionItemForm, RegisterForm, EmailChangeForm
 
 def register(request):
     if request.method == 'POST':
@@ -53,3 +55,29 @@ def collection_delete(request, pk):
         item.delete()
         return redirect('collection_list')
     return render(request, 'app/collection_confirm_delete.html', {'item': item})
+
+login_required
+def profile(request):
+    if request.method == 'POST' and 'email_form' in request.POST:
+        email_form = EmailChangeForm(request.POST, instance=request.user)
+        if email_form.is_valid():
+            email_form.save()
+            messages.success(request, 'Email успешно обновлен')
+            return redirect('profile')
+    else:
+        email_form = EmailChangeForm(instance=request.user)
+
+    if request.method == 'POST' and 'password_form' in request.POST:
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Пароль успешно изменен')
+            return redirect('profile')
+    else:
+        password_form = PasswordChangeForm(request.user)
+
+    return render(request, 'auth/profile.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
