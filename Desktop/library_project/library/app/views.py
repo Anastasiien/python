@@ -17,7 +17,7 @@ def register(request):
 
 @login_required
 def collection_list(request):
-    items = CollectionItem.objects.filter(owner=request.user)
+    items = CollectionItem.objects.filter(owner=request.user) 
     return render(request, 'app/collection_list.html', {'items': items})
 
 @login_required
@@ -28,7 +28,7 @@ def collection_create(request):
             item = form.save(commit=False)
             item.owner = request.user
             item.save()
-            form.save_m2m()  # для ManyToMany
+            form.save_m2m()  
             return redirect('collection_list')
     else:
         form = CollectionItemForm()
