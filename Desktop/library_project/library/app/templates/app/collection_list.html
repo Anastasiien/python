@@ -1,16 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Моя коллекция{% endblock %}
+
+{% block content %}
 <h1>Моя коллекция</h1>
 
-<a href="{% url 'collection_create' %}">Добавить новый элемент</a>  |
-<a href="{% url 'profile' %}">Профиль (смена email/пароля)</a>
+<form method="get">
+    <label>Жанр:</label>
+    <select name="genre">
+        <option value="">Все</option>
+        {% for genre in genres %}
+            <option value="{{ genre.id }}"
+                {% if genre.id|stringformat:"s" == selected_genre %}selected{% endif %}>
+                {{ genre.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label>Сортировка:</label>
+    <select name="sort">
+        <option value="">Без сортировки</option>
+        <option value="title" {% if selected_sort == "title" %}selected{% endif %}>А → Я</option>
+        <option value="-title" {% if selected_sort == "-title" %}selected{% endif %}>Я → А</option>
+    </select>
+
+    <button type="submit">Применить</button>
+</form>
+
+<hr>
 
 <ul>
-  {% for item in items %}
-    <li>
-      {{ item.title }} - {{ item.description }}
-      <a href="{% url 'collection_update' item.pk %}">Редактировать</a>
-      <a href="{% url 'collection_delete' item.pk %}">Удалить</a>
-    </li>
-  {% empty %}
-    <li>Нет элементов</li>
-  {% endfor %}
+    {% for item in items %}
+        <li>
+            <strong>{{ item.title }}</strong><br>
+            {{ item.description }}<br>
+            Жанры:
+            {% for g in item.genres.all %}
+                {{ g.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </li>
+    {% empty %}
+        <li>Нет элементов</li>
+    {% endfor %}
 </ul>
+
+<a href="{% url 'collection_create' %}">Добавить элемент</a>
+{% endblock %}
